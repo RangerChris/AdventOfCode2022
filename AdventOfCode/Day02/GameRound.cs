@@ -2,31 +2,9 @@
 
 public class GameRound
 {
-    public enum WeaponSelection
-    {
-        Rock,
-        Paper,
-        Scissors,
-        Unknown
-    }
-    
-    public enum Winner
-    {
-        Opponent,
-        Player,
-        Draw
-    }
-
-    public GameRound(string lineData)
-    {
-        Input = lineData;
-        Opponent = ParseStrategy(lineData[0]);
-        Player = ParseStrategy(lineData[2]);
-    }
-
-    private string Input { get; }
-    internal WeaponSelection Opponent { get; }
-    public WeaponSelection Player { get; }
+    protected string? Input { get; init; }
+    internal WeaponSelection Opponent { get; init; }
+    public WeaponSelection Player { get; init; }
 
     public int Score
     {
@@ -79,20 +57,6 @@ public class GameRound
 
             return Winner.Opponent;
         }
-    }
-
-    private WeaponSelection ParseStrategy(char strategyCode)
-    {
-        return strategyCode switch
-        {
-            'A' => WeaponSelection.Rock,
-            'B' => WeaponSelection.Paper,
-            'C' => WeaponSelection.Scissors,
-            'X' => WeaponSelection.Rock,
-            'Y' => WeaponSelection.Paper,
-            'Z' => WeaponSelection.Scissors,
-            _ => WeaponSelection.Unknown
-        };
     }
 
     public override string ToString()
