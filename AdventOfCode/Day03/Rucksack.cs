@@ -7,7 +7,7 @@ public class Rucksack
         Content = content;
     }
 
-    private string Content { get; set; }
+    public string Content { get; set; }
 
     public string Compartment1
     {
