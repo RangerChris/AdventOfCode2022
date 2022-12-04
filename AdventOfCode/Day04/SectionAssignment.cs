@@ -36,11 +36,32 @@ public class SectionAssignment
 
         return false;
     }
+    
+    public bool Overlaps()
+    {
+        var orderedPairs = PairList.OrderBy(c => c.Min).ToList();
+        if ((orderedPairs[0].Min >= orderedPairs[1].Min && 
+            orderedPairs[0].Min <= orderedPairs[1].Max) ||
+            orderedPairs[0].Max >= orderedPairs[1].Min &&
+            orderedPairs[0].Max <= orderedPairs[1].Min)
+        {
+            return true;
+        }
+        if ((orderedPairs[1].Min >= orderedPairs[0].Min && 
+             orderedPairs[1].Min <= orderedPairs[0].Max) ||
+            orderedPairs[1].Max >= orderedPairs[0].Min &&
+            orderedPairs[1].Max <= orderedPairs[0].Min)
+        {
+            return true;
+        }
+
+        return false;
+    }
 
     public override string ToString()
     {
         var orderedPairs = PairList.OrderBy(c => c.Min).ToList();
-        return $"{orderedPairs[0].Min}-{orderedPairs[0].Max} {orderedPairs[1].Min}-{orderedPairs[1].Max}. FullyContains: {ContainsFully()}";
+        return $"{orderedPairs[0].Min}-{orderedPairs[0].Max} {orderedPairs[1].Min}-{orderedPairs[1].Max}. FullyContains: {ContainsFully()} Overlaps {Overlaps()}";
     }
 }
 
