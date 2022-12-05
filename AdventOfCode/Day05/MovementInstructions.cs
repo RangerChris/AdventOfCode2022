@@ -4,7 +4,6 @@ public class MovementInstructions
 {
     public MovementInstructions(string instruction)
     {
-        OriginalInstruction = instruction;
         var reducedInstruction = instruction.Replace("move ", "");
         reducedInstruction = reducedInstruction.Replace("from ", "");
         reducedInstruction = reducedInstruction.Replace("to ", "");
@@ -13,8 +12,6 @@ public class MovementInstructions
         FromStack = Convert.ToInt32(keyNumbers[1]);
         ToStack = Convert.ToInt32(keyNumbers[2]);
     }
-
-    public string OriginalInstruction { get; set; }
 
     public int ToStack { get; set; }
 

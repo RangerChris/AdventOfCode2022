@@ -2,7 +2,7 @@
 
 public class Supplies
 {
-    public List<List<char>> Stacks = new();
+    public readonly List<List<char>> Stacks = new();
 
     public List<MovementInstructions> Instructions { get; set; }
 
@@ -20,10 +20,22 @@ public class Supplies
 
     public void StartCrane()
     {
+        if (UseCrateMover9001)
+        {
+            foreach (var instruction in Instructions)
+            {
+                var startIndex = (Stacks[instruction.FromStack - 1].Count) - instruction.NumberOfCreatesToMove;
+                var crateList = Stacks[instruction.FromStack - 1].GetRange(startIndex, instruction.NumberOfCreatesToMove);
+                Stacks[instruction.FromStack - 1].RemoveRange(startIndex, instruction.NumberOfCreatesToMove);
+                Stacks[instruction.ToStack - 1].AddRange(crateList);    
+            }
+
+            return;
+        }
+        
         foreach (var instruction in Instructions)
         {
-            Console.WriteLine(instruction.OriginalInstruction);
-            for (int i = 0; i < instruction.NumberOfCreatesToMove; i++)
+            for (var i = 0; i < instruction.NumberOfCreatesToMove; i++)
             {
                 var crate = Stacks[instruction.FromStack-1].Last();
                 Stacks[instruction.FromStack-1].RemoveAt(Stacks[instruction.FromStack-1].Count-1);
@@ -31,4 +43,6 @@ public class Supplies
             }
         }
     }
+
+    public bool UseCrateMover9001 { get; set; }
 }
