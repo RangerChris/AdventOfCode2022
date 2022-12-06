@@ -2,7 +2,7 @@
 
 public class SectionAssignment
 {
-    public List<Pair> PairList = new();
+    public readonly List<Pair> PairList = new();
 
     public SectionAssignment(string assignment)
     {
@@ -23,12 +23,13 @@ public class SectionAssignment
     public bool ContainsFully()
     {
         var orderedPairs = PairList.OrderBy(c => c.Min).ToList();
-        if (orderedPairs[0].Min <= orderedPairs[1].Min && 
+        if (orderedPairs[0].Min <= orderedPairs[1].Min &&
             orderedPairs[0].Max >= orderedPairs[1].Max)
         {
             return true;
         }
-        if (orderedPairs[1].Min <= orderedPairs[0].Min && 
+
+        if (orderedPairs[1].Min <= orderedPairs[0].Min &&
             orderedPairs[1].Max >= orderedPairs[0].Max)
         {
             return true;
@@ -36,32 +37,27 @@ public class SectionAssignment
 
         return false;
     }
-    
+
     public bool Overlaps()
     {
         var orderedPairs = PairList.OrderBy(c => c.Min).ToList();
-        if ((orderedPairs[0].Min >= orderedPairs[1].Min && 
-            orderedPairs[0].Min <= orderedPairs[1].Max) ||
-            orderedPairs[0].Max >= orderedPairs[1].Min &&
-            orderedPairs[0].Max <= orderedPairs[1].Min)
+        if ((orderedPairs[0].Min >= orderedPairs[1].Min &&
+             orderedPairs[0].Min <= orderedPairs[1].Max) ||
+            (orderedPairs[0].Max >= orderedPairs[1].Min &&
+             orderedPairs[0].Max <= orderedPairs[1].Min))
         {
             return true;
         }
-        if ((orderedPairs[1].Min >= orderedPairs[0].Min && 
+
+        if ((orderedPairs[1].Min >= orderedPairs[0].Min &&
              orderedPairs[1].Min <= orderedPairs[0].Max) ||
-            orderedPairs[1].Max >= orderedPairs[0].Min &&
-            orderedPairs[1].Max <= orderedPairs[0].Min)
+            (orderedPairs[1].Max >= orderedPairs[0].Min &&
+             orderedPairs[1].Max <= orderedPairs[0].Min))
         {
             return true;
         }
 
         return false;
-    }
-
-    public override string ToString()
-    {
-        var orderedPairs = PairList.OrderBy(c => c.Min).ToList();
-        return $"{orderedPairs[0].Min}-{orderedPairs[0].Max} {orderedPairs[1].Min}-{orderedPairs[1].Max}. FullyContains: {ContainsFully()} Overlaps {Overlaps()}";
     }
 }
 

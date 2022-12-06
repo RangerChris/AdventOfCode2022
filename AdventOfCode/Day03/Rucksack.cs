@@ -45,7 +45,7 @@ public class Rucksack
             if (char.IsUpper(item)) offSet = 38;
 
             var priority = item - offSet;
-            return priority;    
+            return priority;
         }
     }
 }

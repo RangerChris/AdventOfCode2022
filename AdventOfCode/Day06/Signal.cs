@@ -22,6 +22,7 @@ public class Signal
             {
                 return startPosition + SignalLength;
             }
+
             startPosition++;
         }
 
@@ -34,7 +35,7 @@ public class Signal
 
         var indexes = new Dictionary<int, int>();
 
-        for (int i = 0; i < SignalLength; i++)
+        for (var i = 0; i < SignalLength; i++)
         {
             try
             {
@@ -47,7 +48,7 @@ public class Signal
             catch (Exception)
             {
                 return false;
-            }    
+            }
         }
 
         return true;

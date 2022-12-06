@@ -23,7 +23,7 @@ public class Day01
         var currentElf = new Elf();
         using var sr = File.OpenText(DataPath);
         string? lineData;
-        
+
         while ((lineData = await sr.ReadLineAsync()) != null)
         {
             if (string.IsNullOrEmpty(lineData))
@@ -39,7 +39,7 @@ public class Day01
                 if (maxCalories < calorieCounter)
                 {
                     maxCalories = calorieCounter;
-                }    
+                }
             }
         }
 
@@ -51,6 +51,7 @@ public class Day01
         {
             _testOutputHelper.WriteLine(elf.ToString());
         }
-        _testOutputHelper.WriteLine($"Top 3 elves total calories: {top3Elves.Sum(c=>c.TotalCalories)}");
+
+        _testOutputHelper.WriteLine($"Top 3 elves total calories: {top3Elves.Sum(c => c.TotalCalories)}");
     }
 }

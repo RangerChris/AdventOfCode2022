@@ -12,19 +12,19 @@ public class Day06
         var signal1 = new Signal("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 4);
         var startPosition = signal1.FindStart();
         startPosition.Should().Be(7);
-        
+
         var signal2 = new Signal("bvwbjplbgvbhsrlpgdmjqwftvncz", 4);
         startPosition = signal2.FindStart();
         startPosition.Should().Be(5);
-        
+
         var signal3 = new Signal("nppdvjthqldpwncqszvftbrmjlhg", 4);
         startPosition = signal3.FindStart();
         startPosition.Should().Be(6);
-        
+
         var signal4 = new Signal("nznrnfrfntjfmvfwmzdfjlvtqnbhcprsg", 4);
         startPosition = signal4.FindStart();
         startPosition.Should().Be(10);
-        
+
         var signal5 = new Signal("zcfzfwzzqfrljwzlrfnpqdbhtmscgvjw", 4);
         startPosition = signal5.FindStart();
         startPosition.Should().Be(11);
@@ -45,12 +45,12 @@ public class Day06
         var signal1 = new Signal("mjqjpqmgbljsphdztnvjfqwrcgsmlb", 14);
         var startPosition = signal1.FindStart();
         startPosition.Should().Be(19);
-        
+
         var signal2 = new Signal("bvwbjplbgvbhsrlpgdmjqwftvncz", 14);
         startPosition = signal2.FindStart();
         startPosition.Should().Be(23);
     }
-    
+
     [Fact]
     public async Task Day06Puzzle2Test()
     {

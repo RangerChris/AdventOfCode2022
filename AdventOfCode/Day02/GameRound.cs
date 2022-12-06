@@ -2,7 +2,7 @@
 
 public class GameRound
 {
-    protected string? Input { get; init; }
+    protected string? Input { get; set; }
     internal WeaponSelection Opponent { get; init; }
     public WeaponSelection Player { get; init; }
 
@@ -13,11 +13,14 @@ public class GameRound
             var tempScore = 0;
             switch (Player)
             {
-                case WeaponSelection.Rock : tempScore = 1;
+                case WeaponSelection.Rock:
+                    tempScore = 1;
                     break;
-                case WeaponSelection.Paper : tempScore = 2;
+                case WeaponSelection.Paper:
+                    tempScore = 2;
                     break;
-                case WeaponSelection.Scissors : tempScore = 3;
+                case WeaponSelection.Scissors:
+                    tempScore = 3;
                     break;
             }
 
@@ -25,6 +28,7 @@ public class GameRound
             {
                 tempScore += 6;
             }
+
             if (GetWinner == Winner.Draw)
             {
                 tempScore += 3;
@@ -42,14 +46,17 @@ public class GameRound
             {
                 return Winner.Player;
             }
+
             if (Player == WeaponSelection.Scissors && Opponent == WeaponSelection.Paper)
             {
                 return Winner.Player;
             }
+
             if (Player == WeaponSelection.Paper && Opponent == WeaponSelection.Rock)
             {
                 return Winner.Player;
             }
+
             if (Player == Opponent)
             {
                 return Winner.Draw;
@@ -57,10 +64,5 @@ public class GameRound
 
             return Winner.Opponent;
         }
-    }
-
-    public override string ToString()
-    {
-        return $"Input: {Input} Opponent: {Opponent} Player: {Player} Who won {GetWinner} Score: {Score}";
     }
 }

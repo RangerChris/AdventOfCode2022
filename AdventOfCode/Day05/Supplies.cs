@@ -6,6 +6,8 @@ public class Supplies
 
     public List<MovementInstructions> Instructions { get; set; }
 
+    public bool UseCrateMover9001 { get; set; }
+
     public void AddCreatesToStack(string content)
     {
         var newStack = new List<char>();
@@ -24,25 +26,23 @@ public class Supplies
         {
             foreach (var instruction in Instructions)
             {
-                var startIndex = (Stacks[instruction.FromStack - 1].Count) - instruction.NumberOfCreatesToMove;
+                var startIndex = Stacks[instruction.FromStack - 1].Count - instruction.NumberOfCreatesToMove;
                 var crateList = Stacks[instruction.FromStack - 1].GetRange(startIndex, instruction.NumberOfCreatesToMove);
                 Stacks[instruction.FromStack - 1].RemoveRange(startIndex, instruction.NumberOfCreatesToMove);
-                Stacks[instruction.ToStack - 1].AddRange(crateList);    
+                Stacks[instruction.ToStack - 1].AddRange(crateList);
             }
 
             return;
         }
-        
+
         foreach (var instruction in Instructions)
         {
             for (var i = 0; i < instruction.NumberOfCreatesToMove; i++)
             {
-                var crate = Stacks[instruction.FromStack-1].Last();
-                Stacks[instruction.FromStack-1].RemoveAt(Stacks[instruction.FromStack-1].Count-1);
-                Stacks[instruction.ToStack-1].Add(crate);
+                var crate = Stacks[instruction.FromStack - 1].Last();
+                Stacks[instruction.FromStack - 1].RemoveAt(Stacks[instruction.FromStack - 1].Count - 1);
+                Stacks[instruction.ToStack - 1].Add(crate);
             }
         }
     }
-
-    public bool UseCrateMover9001 { get; set; }
 }

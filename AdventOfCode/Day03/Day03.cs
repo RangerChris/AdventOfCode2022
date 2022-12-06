@@ -127,23 +127,23 @@ public class Day03
         {
             var rucksack = new Rucksack(lineData);
             currentElfGroup.Group.Add(rucksack);
-            
+
             if (currentElfGroup.Group.Count >= 3)
             {
                 allElfGroups.Add(currentElfGroup);
                 currentElfGroup = new ElfGroup();
             }
         }
-        
+
         allElfGroups.Count.Should().Be(100);
-        
+
         // Find group priority
         foreach (var currentGroup in allElfGroups)
         {
             currentGroup.PriorityItem = Helper.GetGroupPriorityItem(currentGroup.Group);
             currentGroup.Priority = Helper.GetPriority(currentGroup.PriorityItem);
         }
-        
+
         var groupScore = allElfGroups.Sum(c => c.Priority);
         groupScore.Should().Be(2434);
     }

@@ -8,7 +8,7 @@ public class GameRoundStrategy2 : GameRound
         Opponent = ParseStrategy(lineData[0]);
         Player = ParseStrategy(lineData[2]);
     }
-    
+
     private WeaponSelection ParseStrategy(char code)
     {
         switch (code)
@@ -35,7 +35,7 @@ public class GameRoundStrategy2 : GameRound
                 throw new ArgumentException("Invalid input", nameof(weapon));
         }
     }
-    
+
     private WeaponSelection DoNotBeat(WeaponSelection weapon)
     {
         switch (weapon)

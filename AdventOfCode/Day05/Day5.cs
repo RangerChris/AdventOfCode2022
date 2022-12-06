@@ -1,12 +1,11 @@
 ﻿using FluentAssertions;
-using Xunit.Abstractions;
 
 namespace AdventOfCode.Day05;
 
 public class Day5
 {
     private static string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Day05\\Input.txt");
-    
+
     [Fact]
     public async Task Day05Puzzle1Test()
     {
@@ -14,7 +13,7 @@ public class Day5
 
         var movementInstructions = await File.ReadAllLinesAsync(DataPath);
         var allInstructions = new List<MovementInstructions>();
-        
+
         foreach (var instruction in movementInstructions)
         {
             allInstructions.Add(new MovementInstructions(instruction));
@@ -33,7 +32,7 @@ public class Day5
 
         answer.Should().Be("TBVFVDZPN");
     }
-    
+
     [Fact]
     public async Task Day05Puzzle2Test()
     {
@@ -42,7 +41,7 @@ public class Day5
 
         var movementInstructions = await File.ReadAllLinesAsync(DataPath);
         var allInstructions = new List<MovementInstructions>();
-        
+
         foreach (var instruction in movementInstructions)
         {
             allInstructions.Add(new MovementInstructions(instruction));
@@ -97,15 +96,15 @@ public class Day5
         supplies.StartCrane();
 
         supplies.Stacks[0][0].Should().Be('C');
-        
+
         supplies.Stacks[1][0].Should().Be('M');
-        
+
         supplies.Stacks[2][0].Should().Be('P');
         supplies.Stacks[2][1].Should().Be('D');
         supplies.Stacks[2][2].Should().Be('N');
         supplies.Stacks[2][3].Should().Be('Z');
     }
-    
+
     [Fact]
     public void Day05Puzzle2HintTest()
     {
@@ -129,9 +128,9 @@ public class Day5
         supplies.StartCrane();
 
         supplies.Stacks[0][0].Should().Be('M');
-        
+
         supplies.Stacks[1][0].Should().Be('C');
-        
+
         supplies.Stacks[2][0].Should().Be('P');
         supplies.Stacks[2][1].Should().Be('Z');
         supplies.Stacks[2][2].Should().Be('N');
