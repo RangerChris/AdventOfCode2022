@@ -5,11 +5,6 @@ namespace AdventOfCode.Day05;
 
 public class Day5
 {
-
-    public Day5(ITestOutputHelper testOutputHelper)
-    {
-    }
-
     private static string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Day05\\Input.txt");
     
     [Fact]

@@ -1,4 +1,4 @@
-﻿namespace AdventOfCode.Core;
+﻿namespace AdventOfCode.Day01;
 
 public class Elf
 {

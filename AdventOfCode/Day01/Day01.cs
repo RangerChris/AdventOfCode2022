@@ -1,5 +1,4 @@
 using System.Collections.Immutable;
-using AdventOfCode.Core;
 using Xunit.Abstractions;
 
 namespace AdventOfCode.Day01;
