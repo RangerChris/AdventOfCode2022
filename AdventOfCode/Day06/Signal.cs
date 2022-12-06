@@ -2,10 +2,13 @@
 
 public class Signal
 {
-    public Signal(string signalData)
+    public Signal(string signalData, int signalLength)
     {
         SignalData = signalData;
+        SignalLength = signalLength;
     }
+
+    public int SignalLength { get; set; }
 
     public string SignalData { get; set; }
 
@@ -14,10 +17,10 @@ public class Signal
         var startPosition = 0;
         while (startPosition < SignalData.Length)
         {
-            var content = SignalData.Substring(startPosition, 4);
+            var content = SignalData.Substring(startPosition, SignalLength);
             if (IsAllDifferent(content))
             {
-                return startPosition + 4;
+                return startPosition + SignalLength;
             }
             startPosition++;
         }
@@ -27,24 +30,24 @@ public class Signal
 
     private bool IsAllDifferent(string content)
     {
-        if (content.Length != 4) return false;
+        if (content.Length != SignalLength) return false;
 
         var indexes = new Dictionary<int, int>();
-        var letter1 = content.AllIndexOf(content[0].ToString(), StringComparison.Ordinal);
-        foreach (var currentLetter in letter1) indexes.Add(currentLetter, 0);
 
-        try
+        for (int i = 0; i < SignalLength; i++)
         {
-            var letter2 = content.AllIndexOf(content[1].ToString(), StringComparison.Ordinal);
-            foreach (var currentLetter in letter2) indexes.Add(currentLetter, 0);
-            var letter3 = content.AllIndexOf(content[2].ToString(), StringComparison.Ordinal);
-            foreach (var currentLetter in letter3) indexes.Add(currentLetter, 0);
-            var letter4 = content.AllIndexOf(content[3].ToString(), StringComparison.Ordinal);
-            foreach (var currentLetter in letter4) indexes.Add(currentLetter, 0);
-        }
-        catch (Exception e)
-        {
-            return false;
+            try
+            {
+                var letter1 = content.AllIndexOf(content[i].ToString(), StringComparison.Ordinal);
+                foreach (var currentLetter in letter1)
+                {
+                    indexes.Add(currentLetter, 0);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }    
         }
 
         return true;
