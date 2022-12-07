@@ -2,9 +2,8 @@
 
 public class GameRound
 {
-    protected string? Input { get; set; }
     internal WeaponSelection Opponent { get; init; }
-    public WeaponSelection Player { get; init; }
+    public WeaponSelection Player { get; protected init; }
 
     public int Score
     {

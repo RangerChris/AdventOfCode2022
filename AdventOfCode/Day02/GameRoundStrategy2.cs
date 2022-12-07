@@ -4,7 +4,6 @@ public class GameRoundStrategy2 : GameRound
 {
     public GameRoundStrategy2(string lineData)
     {
-        Input = lineData;
         Opponent = ParseStrategy(lineData[0]);
         Player = ParseStrategy(lineData[2]);
     }
@@ -24,7 +23,7 @@ public class GameRoundStrategy2 : GameRound
         }
     }
 
-    private WeaponSelection Beats(WeaponSelection weapon)
+    private static WeaponSelection Beats(WeaponSelection weapon)
     {
         switch (weapon)
         {
@@ -36,7 +35,7 @@ public class GameRoundStrategy2 : GameRound
         }
     }
 
-    private WeaponSelection DoNotBeat(WeaponSelection weapon)
+    private static WeaponSelection DoNotBeat(WeaponSelection weapon)
     {
         switch (weapon)
         {

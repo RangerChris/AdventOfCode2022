@@ -29,17 +29,14 @@ public class DirectoryNode
             tabs += "\t";
         }
         
-        if (string.IsNullOrEmpty(DirectoryName) && string.IsNullOrEmpty(FileName))
+        switch (NodeType)
         {
-            result.AppendLine("- / (dir)");
-        }
-        if (NodeType == NodeType.Directory)
-        {
-            result.AppendLine($"{tabs}- {DirectoryName} (dir, size={Size})");    
-        }
-        if (NodeType == NodeType.File)
-        {
-            result.AppendLine($"{tabs}- {FileName} (file, size={Size})");    
+            case NodeType.Directory:
+                result.AppendLine($"{tabs}- {DirectoryName} (dir, size={Size})");
+                break;
+            case NodeType.File:
+                result.AppendLine($"{tabs}- {FileName} (file, size={Size})");
+                break;
         }
 
         return result.ToString();
