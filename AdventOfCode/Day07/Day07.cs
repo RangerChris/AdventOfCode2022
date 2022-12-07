@@ -75,4 +75,66 @@ public class Day07
         var puzzle1Answer = drive.DriveRoot.Flatten().Where(c => c.Size <= 100000 && c.NodeType == NodeType.Directory).Sum(c=>c.Size);
         puzzle1Answer.Should().Be(1232307);
     }
+
+    [Fact]
+    public void Day07Hint2Test()
+    {
+        const string input = @"
+                            $ cd /
+                            $ ls
+                            dir a
+                            14848514 b.txt
+                            8504156 c.dat
+                            dir d
+                            $ cd a
+                            $ ls
+                            dir e
+                            29116 f
+                            2557 g
+                            62596 h.lst
+                            $ cd e
+                            $ ls
+                            584 i
+                            $ cd ..
+                            $ cd ..
+                            $ cd d
+                            $ ls
+                            4060174 j
+                            8033020 d.log
+                            5626152 d.ext
+                            7214296 k";
+
+        var drive = new Drive();
+        drive.BuildDirectoryStructure(input);
+        drive.CalculateSize();
+        var spaceRequired = GetSpaceRequired(drive);
+        spaceRequired.Should().Be(8381165);
+        var directoriesToDelete = drive.DriveRoot.Flatten().Where(c => c.Size >= spaceRequired && c.NodeType == NodeType.Directory).OrderBy(c=>c.Size);
+        var smallestDirectory = directoriesToDelete.First();
+        smallestDirectory.Size.Should().Be(24933642);
+    }
+    
+    [Fact]
+    public async Task Day07Puzzle2Test()
+    {
+        var input = await File.ReadAllTextAsync(DataPath);
+        var drive = new Drive();
+        drive.BuildDirectoryStructure(input);
+        drive.CalculateSize();
+        
+        var spaceRequired = GetSpaceRequired(drive);
+        var directoriesToDelete = drive.DriveRoot.Flatten().Where(c => c.Size >= spaceRequired && c.NodeType == NodeType.Directory).OrderBy(c=>c.Size);
+        var smallestDirectory = directoriesToDelete.First();
+        smallestDirectory.Size.Should().Be(7268994);
+    }
+
+    private static long GetSpaceRequired(Drive drive)
+    {
+        var totalDiskSize = 70000000;
+        var spaceUsed = drive.DriveRoot.Flatten().Single(c => c.DirectoryName.Equals("/")).Size;
+        var unusedSpace = totalDiskSize - spaceUsed;
+
+        var spaceRequired = 30000000 - unusedSpace;
+        return spaceRequired;
+    }
 }
