@@ -66,8 +66,13 @@ public class Day07
         var drive = new Drive();
         drive.BuildDirectoryStructure(input);
         drive.CalculateSize();
+        
         _testOutputHelper.WriteLine(drive.PrintDirectoryStructure());
+        
         var dirRoot = drive.DriveRoot.Flatten().Single(c => c.DirectoryName.Equals("/"));
-        //dirRoot.Size.Should().Be(48381165);
+        dirRoot.Size.Should().Be(47052440);
+
+        var puzzle1Answer = drive.DriveRoot.Flatten().Where(c => c.Size <= 100000 && c.NodeType == NodeType.Directory).Sum(c=>c.Size);
+        puzzle1Answer.Should().Be(1232307);
     }
 }

@@ -40,8 +40,10 @@ public class Drive
             }
             if (command.StartsWith("$ cd"))
             {
+                DirectoryNode? node = null;
                 var changeDirectory = command.Split(" ");
-                var node = DriveRoot.Flatten().SingleOrDefault(c => c.DirectoryName.Equals(changeDirectory[2]));
+                node = currentTreeNode.Children.SingleOrDefault(c => c.Value.DirectoryName.Equals(changeDirectory[2])).Value;
+
                 if (node != null)
                 {
                     currentTreeNode = node.NodeLink;
