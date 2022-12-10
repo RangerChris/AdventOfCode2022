@@ -45,6 +45,13 @@ public class ForestMap
         var tree = Map[i][j];
 
         if (tree.Height == 0) return false;
+        
+        var scenicScoreNorth = ScenicScoreNorth(i, j);
+        var scenicScoreSouth = ScenicScoreSouth(i, j);
+        var scenicScoreEast = ScenicScoreEast(i, j);
+        var scenicScoreWest = ScenicScoreWest(i, j);
+
+        tree.ScenicScore = scenicScoreNorth * scenicScoreSouth * scenicScoreEast * scenicScoreWest;
 
         if (HasLineOfSightNorth(i, j) ||
             HasLineOfSightSouth(i, j) ||
@@ -53,6 +60,96 @@ public class ForestMap
             return true;
 
         return false;
+    }
+    
+    private int ScenicScoreWest(int i, int j)
+    {
+        var tree = Map[i][j];
+        var scenicValue = 0;
+        for (var y = 1; y < Columns; y++)
+        {
+            if (j - y < 0)
+            {
+                continue;
+            }
+
+            if (tree.Height <= Map[i][j-y].Height)
+            {
+                scenicValue++;
+                return scenicValue;
+            }
+            scenicValue++;
+        }
+
+        return scenicValue;
+    }
+    
+    private int ScenicScoreEast(int i, int j)
+    {
+        var tree = Map[i][j];
+        var scenicValue = 0;
+        for (var y = 1; y <= Columns; y++)
+        {
+            if (j + y >= Columns)
+            {
+                continue;
+            }
+
+            if (tree.Height <= Map[i][j+y].Height)
+            {
+                scenicValue++;
+                return scenicValue;
+            }
+            scenicValue++;
+        }
+
+        return scenicValue;
+    }
+    
+    private int ScenicScoreSouth(int i, int j)
+    {
+        var tree = Map[i][j];
+        var scenicValue = 0;
+        for (var y = 1; y < Rows; y++)
+        {
+            if (i + y >= Rows)
+            {
+                continue;
+            }
+
+            if (tree.Height <= Map[i + y][j].Height)
+            {
+                scenicValue++;
+                return scenicValue;
+            }
+
+            scenicValue++;
+        }
+
+        return scenicValue;
+    }
+    
+    private int ScenicScoreNorth(int i, int j)
+    {
+        var tree = Map[i][j];
+        var scenicValue = 0;
+        for (var y = 1; y < Rows; y++)
+        {
+            if (i - y < 0)
+            {
+                continue;
+            }
+
+            if (tree.Height <= Map[i - y][j].Height)
+            {
+                scenicValue++;
+                return scenicValue;
+            }
+
+            scenicValue++;
+        }
+
+        return scenicValue;
     }
 
     private bool IsAtEdge(int i, int j)

@@ -10,6 +10,7 @@ public class Tree
 
     public int Height { get; }
     public bool Visible { get; set; }
+    public int ScenicScore { get; set; }
 
     public override string ToString()
     {

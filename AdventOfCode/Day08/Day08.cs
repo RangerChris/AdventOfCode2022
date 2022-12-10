@@ -40,10 +40,23 @@ public class Day08
     [Fact]
     public void Day08Hint2Test()
     {
+        const string input = @"30373
+25512
+65332
+33549
+35390";
+
+        var forestMap = new ForestMap(input);
+        forestMap.Map[1][2].ScenicScore.Should().Be(4);
+        forestMap.Map[3][2].ScenicScore.Should().Be(8);
     }
     
     [Fact]
-    public void Day08Puzzle2Test()
+    public async Task Day08Puzzle2Test()
     {
+        var input = await File.ReadAllTextAsync(DataPath);
+        var forestMap = new ForestMap(input);
+        var scenicScores = forestMap.Map.SelectMany(c => c).ToList().Where(t=>t.Visible);
+        scenicScores.Max(c=>c.ScenicScore).Should().Be(335580);
     }
 }
