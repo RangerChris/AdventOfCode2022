@@ -5,18 +5,19 @@ public class Cpu
     public Cpu()
     {
         RegisterX = 1;
+        Cycles = 1;
     }
     
     public int Cycles { get; set; }
     public int RegisterX { get; set; }
     private int _instructionCounter = 0;
     public List<string> Instructions { get; set; }
-    public List<CpuState> DebugHistory { get; set; }
+    public List<CpuStateLine> CpuStateHistory { get; set; }
 
     public void LoadInstructions(string input)
     {
         Instructions = input.Split(Environment.NewLine).ToList();
-        DebugHistory = new List<CpuState>();
+        CpuStateHistory = new List<CpuStateLine>();
     }
 
     public void Execute()
@@ -25,11 +26,12 @@ public class Cpu
 
         while (_instructionCounter < Instructions.Count)
         {
+            CpuStateHistory.Add(new CpuStateLine(Cycles, RegisterX, Cycles*RegisterX, currentInstruction));
             if (currentInstruction == null)
             {
                 currentInstruction = GetNextInstruction();
             }
-            Cycles++;
+
             currentInstruction.NumberOfCyclesToComplete--;
 
             if (currentInstruction.NumberOfCyclesToComplete == 0)
@@ -38,8 +40,7 @@ public class Cpu
                 _instructionCounter++;
                 currentInstruction = null;
             }
-            
-            DebugHistory.Add(new CpuState(Cycles, RegisterX, Cycles*RegisterX));
+            Cycles++;
         }
         
     }
@@ -60,6 +61,12 @@ public class Cpu
             result = new NoopInstruction("noop");
         }
         
+        return result;
+    }
+
+    public CpuStateLine? GetSignalValue(int cycle)
+    {
+        var result = CpuStateHistory.SingleOrDefault(c => c.Cycle == cycle);
         return result;
     }
 }

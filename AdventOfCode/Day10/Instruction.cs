@@ -18,7 +18,12 @@ public abstract class Instruction
             NumberOfCyclesToComplete = 2;
         }
     }
-    
+
+    public override string ToString()
+    {
+        return $"Instruction: {Name} cycle: {NumberOfCyclesToComplete}";
+    }
+
     public abstract void PostExecution(Cpu cpu);
 }
 
@@ -41,7 +46,6 @@ public class NoopInstruction : Instruction
 {
     public NoopInstruction(string instruction) : base(instruction)
     {
-        
     }
 
     public override void PostExecution(Cpu cpu)
