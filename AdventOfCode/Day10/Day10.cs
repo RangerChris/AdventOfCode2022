@@ -32,18 +32,13 @@ addx -5";
         cpu.Cycles.Should().Be(6);
         cpu.RegisterX.Should().Be(-1);
         
-        var debug = new StringBuilder();
-        foreach (var state in cpu.CpuStateHistory)
-        {
-            debug.AppendLine(state.ToString());
-        }
-        _testOutputHelper.WriteLine(debug.ToString());
+        _testOutputHelper.WriteLine(GetDebugInfo(cpu));
     }
-    
+
     [Fact]
     public void Day10Hint2()
     {
-        var input = @"addx 15
+        const string input = @"addx 15
 addx -11
 addx 6
 addx -3
@@ -191,46 +186,44 @@ noop
 noop";
 
         var cpu = new Cpu();
+        var monitor = new Monitor();
         cpu.LoadInstructions(input);
         cpu.Instructions.Should().HaveCount(146);
         cpu.Execute();
+        var screenDump = monitor.ShowScreen(cpu);
+        _testOutputHelper.WriteLine(screenDump);
 
         cpu.Cycles.Should().Be(241);
         cpu.RegisterX.Should().Be(17);
         
-        var debug = new StringBuilder();
-        foreach (var state in cpu.CpuStateHistory)
-        {
-            debug.AppendLine(state.ToString());
-        }
-        _testOutputHelper.WriteLine(debug.ToString());
+        //_testOutputHelper.WriteLine(GetDebugInfo(cpu));
 
-        var signalAtCycle20 = cpu.GetSignalValue(20);
+        var signalAtCycle20 = cpu.GetCpuStateAtCycle(20);
         signalAtCycle20?.Cycle.Should().Be(20);
         signalAtCycle20?.RegisterValue.Should().Be(21);
         signalAtCycle20?.SignalValue.Should().Be(420);
         
-        var signalAtCycle60 = cpu.GetSignalValue(60);
+        var signalAtCycle60 = cpu.GetCpuStateAtCycle(60);
         signalAtCycle60?.Cycle.Should().Be(60);
         signalAtCycle60?.RegisterValue.Should().Be(19);
         signalAtCycle60?.SignalValue.Should().Be(1140);
         
-        var signalAtCycle100 = cpu.GetSignalValue(100);
+        var signalAtCycle100 = cpu.GetCpuStateAtCycle(100);
         signalAtCycle100?.Cycle.Should().Be(100);
         signalAtCycle100?.RegisterValue.Should().Be(18);
         signalAtCycle100?.SignalValue.Should().Be(1800);
         
-        var signalAtCycle140 = cpu.GetSignalValue(140);
+        var signalAtCycle140 = cpu.GetCpuStateAtCycle(140);
         signalAtCycle140?.Cycle.Should().Be(140);
         signalAtCycle140?.RegisterValue.Should().Be(21);
         signalAtCycle140?.SignalValue.Should().Be(2940);
         
-        var signalAtCycle180 = cpu.GetSignalValue(180);
+        var signalAtCycle180 = cpu.GetCpuStateAtCycle(180);
         signalAtCycle180?.Cycle.Should().Be(180);
         signalAtCycle180?.RegisterValue.Should().Be(16);
         signalAtCycle180?.SignalValue.Should().Be(2880);
         
-        var signalAtCycle220 = cpu.GetSignalValue(220);
+        var signalAtCycle220 = cpu.GetCpuStateAtCycle(220);
         signalAtCycle220?.Cycle.Should().Be(220);
         signalAtCycle220?.RegisterValue.Should().Be(18);
         signalAtCycle220?.SignalValue.Should().Be(3960);
@@ -246,8 +239,33 @@ noop";
         cpu.Execute();
         
         cpu.Cycles.Should().Be(241);
-        var signalStrength = cpu.GetSignalValue(20).SignalValue + cpu.GetSignalValue(60).SignalValue + cpu.GetSignalValue(100).SignalValue +
-                             cpu.GetSignalValue(140).SignalValue + cpu.GetSignalValue(180).SignalValue + cpu.GetSignalValue(220).SignalValue;
+        var signalStrength = cpu.GetCpuStateAtCycle(20)?.SignalValue + cpu.GetCpuStateAtCycle(60)?.SignalValue + cpu.GetCpuStateAtCycle(100)?.SignalValue +
+                             cpu.GetCpuStateAtCycle(140)?.SignalValue + cpu.GetCpuStateAtCycle(180)?.SignalValue + cpu.GetCpuStateAtCycle(220)?.SignalValue;
         signalStrength.Should().Be(13680);
+    }
+    
+    [Fact]
+    public async Task Day10Puzzle2()
+    {
+        var input = await File.ReadAllTextAsync(DataPath);
+        var cpu = new Cpu();
+        var monitor = new Monitor();
+        cpu.LoadInstructions(input);
+        cpu.Instructions.Should().HaveCount(140);
+        cpu.Execute();
+        
+        var screenDump = monitor.ShowScreen(cpu);
+        _testOutputHelper.WriteLine(screenDump);
+    }
+    
+    private static string GetDebugInfo(Cpu cpu)
+    {
+        var debug = new StringBuilder();
+        foreach (var state in cpu.CpuStateHistory)
+        {
+            debug.AppendLine(state.ToString());
+        }
+
+        return debug.ToString();
     }
 }

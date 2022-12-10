@@ -3,9 +3,9 @@
 public abstract class Instruction
 {
     public int NumberOfCyclesToComplete;
-    public string Name { get; set; }
+    private string Name { get; }
 
-    public Instruction(string instruction)
+    protected Instruction(string instruction)
     {
         if (instruction.Equals("noop"))
         {
@@ -34,7 +34,7 @@ public class AddXInstruction : Instruction
         XValue = value;
     }
 
-    public int XValue { get; set; }
+    private int XValue { get; set; }
 
     public override void PostExecution(Cpu cpu)
     {

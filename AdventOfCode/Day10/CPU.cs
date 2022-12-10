@@ -8,11 +8,11 @@ public class Cpu
         Cycles = 1;
     }
     
-    public int Cycles { get; set; }
+    public int Cycles { get; private set; }
     public int RegisterX { get; set; }
-    private int _instructionCounter = 0;
-    public List<string> Instructions { get; set; }
-    public List<CpuStateLine> CpuStateHistory { get; set; }
+    private int _instructionCounter;
+    public List<string>? Instructions { get; private set; }
+    public List<CpuStateLine>? CpuStateHistory { get; private set; }
 
     public void LoadInstructions(string input)
     {
@@ -22,11 +22,11 @@ public class Cpu
 
     public void Execute()
     {
-        Instruction currentInstruction = null;
+        Instruction? currentInstruction = null;
 
-        while (_instructionCounter < Instructions.Count)
+        while (_instructionCounter < Instructions?.Count)
         {
-            CpuStateHistory.Add(new CpuStateLine(Cycles, RegisterX, Cycles*RegisterX, currentInstruction));
+            CpuStateHistory?.Add(new CpuStateLine(Cycles, RegisterX, Cycles*RegisterX, currentInstruction));
             if (currentInstruction == null)
             {
                 currentInstruction = GetNextInstruction();
@@ -40,6 +40,7 @@ public class Cpu
                 _instructionCounter++;
                 currentInstruction = null;
             }
+
             Cycles++;
         }
         
@@ -47,10 +48,10 @@ public class Cpu
 
     private Instruction GetNextInstruction()
     {
-        Instruction result = null;
-        var instructionData = Instructions[_instructionCounter].Split(" ");
+        Instruction? result = null;
+        var instructionData = Instructions?[_instructionCounter].Split(" ");
 
-        if (instructionData[0].Equals("addx"))
+        if (instructionData != null && instructionData[0].Equals("addx"))
         {
             result = new AddXInstruction("addx", Convert.ToInt32(instructionData[1]));
         }
@@ -64,9 +65,9 @@ public class Cpu
         return result;
     }
 
-    public CpuStateLine? GetSignalValue(int cycle)
+    public CpuStateLine? GetCpuStateAtCycle(int cycle)
     {
-        var result = CpuStateHistory.SingleOrDefault(c => c.Cycle == cycle);
+        var result = CpuStateHistory?.SingleOrDefault(c => c.Cycle == cycle);
         return result;
     }
 }
