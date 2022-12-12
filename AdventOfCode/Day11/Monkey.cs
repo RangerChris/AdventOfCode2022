@@ -28,7 +28,7 @@ public class Monkey
 
     public int InspectCount { get; set; }
 
-    public void Inspect(MonkeyItem item)
+    public void Inspect(MonkeyItem item, bool worry)
     {
         // Play with item
         var worryTemp = WorryAction.Split(" ");
@@ -42,7 +42,6 @@ public class Monkey
             {
                 item.WorryLevel *= Convert.ToInt32(worryTemp[1]);    
             }
-            
         }
 
         if (worryTemp[0].Equals("+"))
@@ -50,15 +49,19 @@ public class Monkey
             item.WorryLevel += Convert.ToInt32(worryTemp[1]);
         }
 
-        GiveItemToMonkey(item);
+        GiveItemToMonkey(item, worry);
 
         item.NumberOfTimesInspected++;
         InspectCount++;
     }
 
-    public void GiveItemToMonkey(MonkeyItem item)
+    public void GiveItemToMonkey(MonkeyItem item, bool worry)
     {
-        item.WorryLevel = item.WorryLevel / 3;
+        if (!worry)
+        {
+            item.WorryLevel = item.WorryLevel / 3;    
+        }
+        
         // Bored with item
         var divisibleTest = item.WorryLevel % WorryTest;
         if (divisibleTest == 0)

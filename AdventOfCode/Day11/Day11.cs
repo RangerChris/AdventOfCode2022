@@ -22,18 +22,21 @@ public class Day11
         var monkeyList = InitializeMonkeys(input);
         monkeyList.Should().HaveCount(4);
         var business = new MonkeyBusiness(monkeyList);
-        business.Inspect();
+        business.Inspect(false);
 
         MonkeyBusiness.Monkeys[0].ItemList.Should().HaveCount(4);
         MonkeyBusiness.Monkeys[1].ItemList.Should().HaveCount(6);
 
-        for (int i = 1; i < 20; i++)
+        for (var i = 1; i < 20; i++)
         {
-            business.Inspect();
+            business.Inspect(false);
         }
         
         MonkeyBusiness.Monkeys[0].ItemList.Should().HaveCount(5);
         MonkeyBusiness.Monkeys[1].ItemList.Should().HaveCount(5);
+
+        var monkeyBusiness = business.GetMonkeyBusiness();
+        monkeyBusiness.Should().Be(10605);
     }
     
     [Fact]
@@ -44,22 +47,33 @@ public class Day11
         monkeyList.Should().HaveCount(8);
         var business = new MonkeyBusiness(monkeyList);
         
-        for (int i = 0; i < 20; i++)
+        for (var i = 0; i < 20; i++)
         {
-            business.Inspect();
+            business.Inspect(false);
         }
 
-        var badMonkeyList = MonkeyBusiness.Monkeys.OrderByDescending(c=>c.InspectCount).ToList();
-        var monkeyBusiness = badMonkeyList[0].InspectCount * badMonkeyList[1].InspectCount;
+        var monkeyBusiness = business.GetMonkeyBusiness();
         monkeyBusiness.Should().Be(54253);
     }
 
     [Fact]
     public void Day11Puzzle2()
     {
+        var input = File.ReadAllText(DataPath);
+        var monkeyList = InitializeMonkeys(input);
+        monkeyList.Should().HaveCount(8);
+        var business = new MonkeyBusiness(monkeyList);
+        
+        for (var i = 0; i < 10000; i++)
+        {
+            business.Inspect(true);
+        }
+
+        var monkeyBusiness = business.GetMonkeyBusiness();
+        monkeyBusiness.Should().Be(870868608);
     }
 
-    private List<Monkey> InitializeMonkeys(string input)
+    private static List<Monkey> InitializeMonkeys(string input)
     {
         var result = new List<Monkey>();
         input = input.Replace("Monkey ", "");
