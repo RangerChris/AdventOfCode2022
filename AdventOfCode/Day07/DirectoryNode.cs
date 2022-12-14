@@ -24,7 +24,7 @@ public class DirectoryNode
         var result = new StringBuilder("");
         var tabs = "";
 
-        for (int i = 0; i < Depth; i++)
+        for (var i = 0; i < Depth; i++)
         {
             tabs += "\t";
         }

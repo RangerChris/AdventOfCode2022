@@ -2,7 +2,6 @@
 
 public class Monitor
 {
-    //........................................
     private readonly char[][] _screen = 
     {
         new char[40],
@@ -33,7 +32,7 @@ public class Monitor
 
     private void DrawOnScreen(Cpu cpu)
     {
-        int cycleIndex = 1;
+        var cycleIndex = 1;
         for (var y = 0; y < _screen.Length; y++)
         {
             for (var x = 0; x < _screen[y].Length; x++)
