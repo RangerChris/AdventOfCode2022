@@ -4,17 +4,19 @@ public class Rope
 {
     private readonly int _worldHeight;
     private readonly int _worldWidth;
+    private bool DisplayMove;
     public readonly Head RopeHead;
     public readonly Tail RopeTail;
     public readonly Dictionary<string, Position> VisitList = new();
 
-    public Rope(int width, int height)
+    public Rope(int width, int height, bool display)
     {
         _worldWidth = width;
         _worldHeight = height;
         RopeHead = new Head(0, _worldHeight-1);
         RopeTail = new Tail(0, _worldHeight-1);
         AddToVisitList(RopeTail.Position);
+        DisplayMove = display;
     }
     
     public string DoMovement(string move)
@@ -53,10 +55,12 @@ public class Rope
                 RopeTail.Position = oldPosition;
                 AddToVisitList(RopeTail.Position);
             }
-            
-            movementShown += DisplayWorld();
-            movementShown += Environment.NewLine;
-            movementShown += Environment.NewLine;
+
+            if (DisplayMove)
+            {
+                movementShown += DisplayWorld();
+                movementShown += Environment.NewLine;    
+            }
         }
 
         return movementShown;
@@ -75,9 +79,11 @@ public class Rope
                 AddToVisitList(RopeTail.Position);
             }
             
-            movementShown += DisplayWorld();
-            movementShown += Environment.NewLine;
-            movementShown += Environment.NewLine;
+            if (DisplayMove)
+            {
+                movementShown += DisplayWorld();
+                movementShown += Environment.NewLine;    
+            }
         }
         return movementShown;
     }
@@ -95,9 +101,11 @@ public class Rope
                 AddToVisitList(RopeTail.Position);
             }
             
-            movementShown += DisplayWorld();
-            movementShown += Environment.NewLine;
-            movementShown += Environment.NewLine;
+            if (DisplayMove)
+            {
+                movementShown += DisplayWorld();
+                movementShown += Environment.NewLine;    
+            }
         }
         
         return movementShown;
@@ -116,9 +124,11 @@ public class Rope
                 AddToVisitList(RopeTail.Position);
             }
             
-            movementShown += DisplayWorld();
-            movementShown += Environment.NewLine;
-            movementShown += Environment.NewLine;
+            if (DisplayMove)
+            {
+                movementShown += DisplayWorld();
+                movementShown += Environment.NewLine;    
+            }
         }
         
         return movementShown;
