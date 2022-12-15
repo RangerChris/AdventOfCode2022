@@ -28,9 +28,6 @@ public class Day14
         gameWorld.WorldMinY.Should().Be(4);
         gameWorld.WorldMaxY.Should().Be(9);
         
-        gameWorld.DrawHorizontalLine(497, 2, 7);
-        gameWorld.DrawVerticalLine(500, 0, 2);
-        
         _testOutputHelper.WriteLine(gameWorld.DrawWorld());
     }
     

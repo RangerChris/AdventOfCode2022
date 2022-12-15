@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Drawing;
+using System.Text;
 
 namespace AdventOfCode.Day14;
 
@@ -8,7 +9,7 @@ public class World
     public int WorldMaxX;
     public int WorldMinY;
     public int WorldMaxY;
-    private readonly char[,] _world;
+    private readonly char[,] world;
 
     private List<string> RockData { get; }
     
@@ -16,18 +17,17 @@ public class World
     {
         RockData = rockData.ToList();
         CalculateWorldMinMax(rockData);
-        _world = new char[10, 10];
-        AddRocks();
+        world = new char[10, 10];
+        ParseRocks();
     }
 
-    private void AddRocks()
+    private void ParseRocks()
     {
-        var dataX = new List<int>();
-        var dataY = new List<int>();
-
         foreach (var currentRock in RockData)
         {
             var coordinates = currentRock.Split(" ");
+            var dataX = new List<int>();
+            var dataY = new List<int>();
             foreach (var coordinate in coordinates)
             {
                 var xy = coordinate.Split(",");
@@ -38,19 +38,58 @@ public class World
         }
     }
 
-    private void AddRock(List<int> dataX, List<int> dataY)
+    private void AddRock(IReadOnlyList<int> dataX, IReadOnlyList<int> dataY)
     {
-        for (var i = 0; i <= dataX.Count; i++)
+        var pen = new Point(ToDrawXCoordinate(dataX[0]), dataY[0]);
+        var rockIndex = 0;
+
+        foreach (var currentX in dataX)
         {
-            if (dataX[i] == dataX[i+1])
+            var xCoordinate = ToDrawXCoordinate(currentX);
+            var yCoordinate = dataY[rockIndex];
+
+            if (pen.X < xCoordinate)
             {
-                DrawVerticalLine(dataX[i], dataY[i], dataY[i+1] - dataY[i]);
+                DrawHorizontalLine(pen.X, pen.Y, xCoordinate, yCoordinate);
             }
-            if (dataY[i] == dataY[i+1])
+
+            if (pen.X > xCoordinate)
             {
-                DrawHorizontalLine(dataX[i], dataY[i], dataX[i] - dataX[i+1]);
+                DrawHorizontalLine(xCoordinate, yCoordinate, pen.X, pen.Y);
+            }
+            
+            if (pen.Y < yCoordinate)
+            {
+                DrawHorizontalLine(pen.X, pen.Y, xCoordinate, yCoordinate);
+            }
+
+            if (pen.Y > yCoordinate)
+            {
+                DrawHorizontalLine(xCoordinate, yCoordinate, pen.X, pen.Y);
+            }
+
+            rockIndex++;
+            if (rockIndex < dataX.Count)
+            {
+                pen = new Point(ToDrawXCoordinate(dataX[rockIndex]), dataY[rockIndex]);    
             }
         }
+
+        // for (var i = 0; i <= dataX.Count; i++)
+        // {
+        //     if (i < dataX.Count-1)
+        //     {
+        //         if (dataX[i] == dataX[i + 1])
+        //         {
+        //             DrawVerticalLine(dataX[i], dataY[i], dataY[i + 1] - dataY[i]);
+        //         }
+        //
+        //         if (dataY[i] == dataY[i + 1])
+        //         {
+        //             DrawHorizontalLine(dataX[i], dataY[i], dataX[i] - dataX[i + 1]);
+        //         }
+        //     }
+        // }
     }
 
     private void CalculateWorldMinMax(IEnumerable<string> rockData)
@@ -83,11 +122,11 @@ public class World
     {
         var result = new StringBuilder();
 
-        for (var y = 0; y < _world.GetLength(1); y++)
+        for (var y = 0; y < world.GetLength(1); y++)
         {
-            for (var x = 0; x < _world.GetLength(0); x++)
+            for (var x = 0; x < world.GetLength(0); x++)
             {
-                if (_world[x, y] > 0)
+                if (world[x, y] > 0)
                 {
                     result.Append('#');
                 }
@@ -109,25 +148,19 @@ public class World
         return result;
     }
 
-    public void DrawHorizontalLine(int x, int y, int length)
+    public void DrawHorizontalLine(int x, int y, int x2, int y2)
     {
-        var xStart = ToDrawXCoordinate(x);
-        var maxX = xStart + length;
-        
-        for (var xx = xStart; xx <= maxX; xx++)
+        for (var xx = x; xx <= x2; xx++)
         {
-            _world[xx, y] = '#';
+            world[xx, y] = '#';
         }
     }
     
-    public void DrawVerticalLine(int x, int y, int length)
+    public void DrawVerticalLine(int x, int y, int x2, int y2)
     {
-        var xCoordinate = ToDrawXCoordinate(x);
-        var maxY = y + length;
-        
-        for (var yy = y; yy <= maxY; yy++)
+        for (var yy = x; yy <= y2; yy++)
         {
-            _world[xCoordinate, yy] = '#';
+            world[x, yy] = '#';
         }
     }
 }
