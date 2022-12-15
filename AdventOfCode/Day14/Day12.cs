@@ -1,22 +1,22 @@
 ﻿using FluentAssertions;
 using Xunit.Abstractions;
 
-namespace AdventOfCode.Day12;
+namespace AdventOfCode.Day14;
 
-public class Day12
+public class Day14
 {
     private readonly ITestOutputHelper _testOutputHelper;
 
-    public Day12(ITestOutputHelper testOutputHelper)
+    public Day14(ITestOutputHelper testOutputHelper)
     {
         _testOutputHelper = testOutputHelper;
     }
 
-    private static string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Day12\\Input.txt");
-    private static string DataPathHint => Path.Combine(Directory.GetCurrentDirectory(), "Day12\\Input-hint.txt");
+    private static string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Day14\\Input.txt");
+    private static string DataPathHint => Path.Combine(Directory.GetCurrentDirectory(), "Day14\\Input-hint.txt");
 
     [Fact]
-    public async Task Day12Hint1()
+    public async Task Day14Hint1()
     {
         var input = await File.ReadAllTextAsync(DataPathHint);
         input = input.Replace(" ->", "");
@@ -29,12 +29,13 @@ public class Day12
         gameWorld.WorldMaxY.Should().Be(9);
         
         gameWorld.DrawHorizontalLine(497, 2, 7);
+        gameWorld.DrawVerticalLine(500, 0, 2);
         
         _testOutputHelper.WriteLine(gameWorld.DrawWorld());
     }
     
     [Fact]
-    public async Task Day12Puzzle1()
+    public async Task Day14Puzzle1()
     {
         var input = await File.ReadAllTextAsync(DataPath);
         input = input.Replace(" ->", "");

@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace AdventOfCode.Day12;
+namespace AdventOfCode.Day14;
 
 public class World
 {
@@ -17,6 +17,40 @@ public class World
         RockData = rockData.ToList();
         CalculateWorldMinMax(rockData);
         _world = new char[10, 10];
+        AddRocks();
+    }
+
+    private void AddRocks()
+    {
+        var dataX = new List<int>();
+        var dataY = new List<int>();
+
+        foreach (var currentRock in RockData)
+        {
+            var coordinates = currentRock.Split(" ");
+            foreach (var coordinate in coordinates)
+            {
+                var xy = coordinate.Split(",");
+                dataX.Add(Convert.ToInt16(xy[0]));
+                dataY.Add(Convert.ToInt16(xy[1]));
+            }
+            AddRock(dataX, dataY);
+        }
+    }
+
+    private void AddRock(List<int> dataX, List<int> dataY)
+    {
+        for (var i = 0; i <= dataX.Count; i++)
+        {
+            if (dataX[i] == dataX[i+1])
+            {
+                DrawVerticalLine(dataX[i], dataY[i], dataY[i+1] - dataY[i]);
+            }
+            if (dataY[i] == dataY[i+1])
+            {
+                DrawHorizontalLine(dataX[i], dataY[i], dataX[i] - dataX[i+1]);
+            }
+        }
     }
 
     private void CalculateWorldMinMax(IEnumerable<string> rockData)
@@ -80,14 +114,20 @@ public class World
         var xStart = ToDrawXCoordinate(x);
         var maxX = xStart + length;
         
-        for (int xx = xStart; xx < maxX; xx++)
+        for (var xx = xStart; xx <= maxX; xx++)
         {
             _world[xx, y] = '#';
         }
     }
     
-    public void DrawVerticalLine(int xStart, int xEnd)
+    public void DrawVerticalLine(int x, int y, int length)
     {
+        var xCoordinate = ToDrawXCoordinate(x);
+        var maxY = y + length;
         
+        for (var yy = y; yy <= maxY; yy++)
+        {
+            _world[xCoordinate, yy] = '#';
+        }
     }
 }
