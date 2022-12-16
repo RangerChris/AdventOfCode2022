@@ -10,6 +10,7 @@ public class World
     public int WorldMinY;
     public int WorldMaxY;
     private readonly char[,] world;
+    private readonly SandSpawner sandSpawner;
 
     private List<string> RockData { get; }
     
@@ -17,8 +18,9 @@ public class World
     {
         RockData = rockData.ToList();
         CalculateWorldMinMax(rockData);
-        world = new char[10, 10];
+        world = new char[ToDrawXCoordinate(WorldMaxX)+1, WorldMaxY+1];
         ParseRocks();
+        sandSpawner = new SandSpawner(ToDrawXCoordinate(500));
     }
 
     private void ParseRocks()
@@ -31,7 +33,7 @@ public class World
             foreach (var coordinate in coordinates)
             {
                 var xy = coordinate.Split(",");
-                dataX.Add(Convert.ToInt16(xy[0]));
+                dataX.Add(ToDrawXCoordinate(Convert.ToInt16(xy[0])));
                 dataY.Add(Convert.ToInt16(xy[1]));
             }
             AddRock(dataX, dataY);
@@ -40,56 +42,24 @@ public class World
 
     private void AddRock(IReadOnlyList<int> dataX, IReadOnlyList<int> dataY)
     {
-        var pen = new Point(ToDrawXCoordinate(dataX[0]), dataY[0]);
-        var rockIndex = 0;
+        var pen = new Point(dataX[0], dataY[0]);
+        var rockIndex = 1;
 
-        foreach (var currentX in dataX)
+        while (rockIndex < dataX.Count)
         {
-            var xCoordinate = ToDrawXCoordinate(currentX);
-            var yCoordinate = dataY[rockIndex];
-
-            if (pen.X < xCoordinate)
+            if (pen.X < dataX[rockIndex] || pen.X > dataX[rockIndex])
             {
-                DrawHorizontalLine(pen.X, pen.Y, xCoordinate, yCoordinate);
+                DrawHorizontalLine(pen.X, pen.Y, dataX[rockIndex], dataY[rockIndex]);
             }
 
-            if (pen.X > xCoordinate)
+            if (pen.Y < dataY[rockIndex] || pen.Y > dataY[rockIndex])
             {
-                DrawHorizontalLine(xCoordinate, yCoordinate, pen.X, pen.Y);
-            }
-            
-            if (pen.Y < yCoordinate)
-            {
-                DrawHorizontalLine(pen.X, pen.Y, xCoordinate, yCoordinate);
+                DrawVerticalLine(pen.X, pen.Y, dataX[rockIndex], dataY[rockIndex]);
             }
 
-            if (pen.Y > yCoordinate)
-            {
-                DrawHorizontalLine(xCoordinate, yCoordinate, pen.X, pen.Y);
-            }
-
+            pen = new Point(dataX[rockIndex], dataY[rockIndex]);
             rockIndex++;
-            if (rockIndex < dataX.Count)
-            {
-                pen = new Point(ToDrawXCoordinate(dataX[rockIndex]), dataY[rockIndex]);    
-            }
         }
-
-        // for (var i = 0; i <= dataX.Count; i++)
-        // {
-        //     if (i < dataX.Count-1)
-        //     {
-        //         if (dataX[i] == dataX[i + 1])
-        //         {
-        //             DrawVerticalLine(dataX[i], dataY[i], dataY[i + 1] - dataY[i]);
-        //         }
-        //
-        //         if (dataY[i] == dataY[i + 1])
-        //         {
-        //             DrawHorizontalLine(dataX[i], dataY[i], dataX[i] - dataX[i + 1]);
-        //         }
-        //     }
-        // }
     }
 
     private void CalculateWorldMinMax(IEnumerable<string> rockData)
@@ -121,6 +91,8 @@ public class World
     public string DrawWorld()
     {
         var result = new StringBuilder();
+        
+        world[sandSpawner.position.X, sandSpawner.position.Y] = '+';
 
         for (var y = 0; y < world.GetLength(1); y++)
         {
@@ -128,7 +100,7 @@ public class World
             {
                 if (world[x, y] > 0)
                 {
-                    result.Append('#');
+                    result.Append(world[x, y]);
                 }
                 else
                 {
@@ -150,17 +122,42 @@ public class World
 
     public void DrawHorizontalLine(int x, int y, int x2, int y2)
     {
-        for (var xx = x; xx <= x2; xx++)
+        var startX = x;
+        var endX = x2;
+        if (startX > x2)
         {
-            world[xx, y] = '#';
+            startX = x2;
+            endX = x;
+        }
+
+        while(startX <= endX)
+        {
+            world[startX++, y] = '#';
         }
     }
-    
+
     public void DrawVerticalLine(int x, int y, int x2, int y2)
     {
-        for (var yy = x; yy <= y2; yy++)
+        var startY = y;
+        var endY = y2;
+        if (startY > y2)
         {
-            world[x, yy] = '#';
+            startY = y2;
+            endY = y;
         }
+
+        while(startY <= endY)
+        {
+            world[x, startY++] = '#';
+        }
+    }
+}
+
+public class SandSpawner
+{
+    public Point position;
+    public SandSpawner(int xCoordinate)
+    {
+        position = new Point(xCoordinate, 0);
     }
 }

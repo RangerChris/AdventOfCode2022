@@ -5,11 +5,11 @@ namespace AdventOfCode.Day14;
 
 public class Day14
 {
-    private readonly ITestOutputHelper _testOutputHelper;
+    private readonly ITestOutputHelper testOutputHelper;
 
     public Day14(ITestOutputHelper testOutputHelper)
     {
-        _testOutputHelper = testOutputHelper;
+        this.testOutputHelper = testOutputHelper;
     }
 
     private static string DataPath => Path.Combine(Directory.GetCurrentDirectory(), "Day14\\Input.txt");
@@ -28,7 +28,7 @@ public class Day14
         gameWorld.WorldMinY.Should().Be(4);
         gameWorld.WorldMaxY.Should().Be(9);
         
-        _testOutputHelper.WriteLine(gameWorld.DrawWorld());
+        testOutputHelper.WriteLine(gameWorld.DrawWorld());
     }
     
     [Fact]
@@ -44,6 +44,6 @@ public class Day14
         gameWorld.WorldMinY.Should().Be(13);
         gameWorld.WorldMaxY.Should().Be(156);
         
-        _testOutputHelper.WriteLine(gameWorld.DrawWorld());
+        testOutputHelper.WriteLine(gameWorld.DrawWorld());
     }
 }
