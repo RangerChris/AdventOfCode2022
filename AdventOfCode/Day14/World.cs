@@ -9,18 +9,19 @@ public class World
     public int WorldMaxX;
     public int WorldMinY;
     public int WorldMaxY;
-    private readonly char[,] world;
-    private readonly SandSpawner sandSpawner;
+    internal readonly char[,] WorldData;
 
     private List<string> RockData { get; }
-    
+
+    public SandSpawner Spawner { get; }
+
     public World(string[] rockData)
     {
         RockData = rockData.ToList();
         CalculateWorldMinMax(rockData);
-        world = new char[ToDrawXCoordinate(WorldMaxX)+1, WorldMaxY+1];
+        WorldData = new char[ToDrawXCoordinate(WorldMaxX)+1, WorldMaxY+1];
         ParseRocks();
-        sandSpawner = new SandSpawner(ToDrawXCoordinate(500));
+        Spawner = new SandSpawner(ToDrawXCoordinate(500), this);
     }
 
     private void ParseRocks()
@@ -92,15 +93,15 @@ public class World
     {
         var result = new StringBuilder();
         
-        world[sandSpawner.position.X, sandSpawner.position.Y] = '+';
+        WorldData[Spawner.Position.X, Spawner.Position.Y] = '+';
 
-        for (var y = 0; y < world.GetLength(1); y++)
+        for (var y = 0; y < WorldData.GetLength(1); y++)
         {
-            for (var x = 0; x < world.GetLength(0); x++)
+            for (var x = 0; x < WorldData.GetLength(0); x++)
             {
-                if (world[x, y] > 0)
+                if (WorldData[x, y] > 0)
                 {
-                    result.Append(world[x, y]);
+                    result.Append(WorldData[x, y]);
                 }
                 else
                 {
@@ -112,6 +113,25 @@ public class World
         }
 
         return result.ToString();
+    }
+    
+    public int CountSandGrains()
+    {
+        int result = 0;
+        
+
+        for (var y = 0; y < WorldData.GetLength(1); y++)
+        {
+            for (var x = 0; x < WorldData.GetLength(0); x++)
+            {
+                if (WorldData[x, y] == 'o')
+                {
+                    result++;
+                }
+            }
+        }
+
+        return result;
     }
 
     public int ToDrawXCoordinate(int inputCoordinate)
@@ -132,7 +152,7 @@ public class World
 
         while(startX <= endX)
         {
-            world[startX++, y] = '#';
+            WorldData[startX++, y] = '#';
         }
     }
 
@@ -148,16 +168,7 @@ public class World
 
         while(startY <= endY)
         {
-            world[x, startY++] = '#';
+            WorldData[x, startY++] = '#';
         }
-    }
-}
-
-public class SandSpawner
-{
-    public Point position;
-    public SandSpawner(int xCoordinate)
-    {
-        position = new Point(xCoordinate, 0);
     }
 }

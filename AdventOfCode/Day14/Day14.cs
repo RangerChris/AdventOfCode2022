@@ -29,6 +29,12 @@ public class Day14
         gameWorld.WorldMaxY.Should().Be(9);
         
         testOutputHelper.WriteLine(gameWorld.DrawWorld());
+
+        gameWorld.Spawner.Start();
+        var grains = gameWorld.CountSandGrains();
+        grains.Should().Be(24);
+        
+        testOutputHelper.WriteLine(gameWorld.DrawWorld());
     }
     
     [Fact]
@@ -43,6 +49,10 @@ public class Day14
         gameWorld.WorldMaxX.Should().Be(518);
         gameWorld.WorldMinY.Should().Be(13);
         gameWorld.WorldMaxY.Should().Be(156);
+        
+        gameWorld.Spawner.Start();
+        var grains = gameWorld.CountSandGrains();
+        grains.Should().Be(817);
         
         testOutputHelper.WriteLine(gameWorld.DrawWorld());
     }
